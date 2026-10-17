@@ -55,13 +55,10 @@ footer{text-align:center;padding:30px;color:#91a2b9;font-size:13px}
    파일을 저장할 때 대소문자를 정확히 맞추세요.
    images/작품폴더/회차폴더/001.jpg 형태로 이미지를 넣으세요. */
 const works=[
- {id:"work01",title:"웹툰 작품 01",description:"작품 소개를 이곳에 입력하세요.",cover:"images/work01/cover.jpg",
+ {id:"work01",title:"식당이모",description:"웹툰 포트폴리오 · 1회",cover:"images/work01/ep01/001.jpg",
   episodes:[
-   {title:"1화",pages:["images/work01/ep01/001.jpg","images/work01/ep01/002.jpg","images/work01/ep01/003.jpg"]},
-   {title:"2화",pages:["images/work01/ep02/001.jpg","images/work01/ep02/002.jpg"]}
-  ]},
- {id:"work02",title:"웹툰 작품 02",description:"두 번째 작품의 소개를 입력하세요.",cover:"images/work02/cover.jpg",
-  episodes:[{title:"1화",pages:["images/work02/ep01/001.jpg","images/work02/ep01/002.jpg"]}]}
+   {title:"1회",pages:["images/work01/ep01/001.jpg","images/work01/ep01/002.jpg","images/work01/ep01/003.jpg"]}
+  ]}
 ];
 const $=id=>document.getElementById(id);
 let currentWork=0,currentEpisode=0;
