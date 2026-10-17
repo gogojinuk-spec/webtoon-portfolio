@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080e18">
+<title>WEBTOON PORTFOLIO</title>
+<style>
+:root{--bg:#080e18;--panel:#121d2d;--muted:#a6b6cb;--accent:#89b8ff;--line:#304057}
+*{box-sizing:border-box}html{scroll-behavior:smooth;overflow-x:hidden}body{margin:0;overflow-x:hidden;background:linear-gradient(160deg,#172d4b,#080e18 55%);background-attachment:fixed;color:#f5f8ff;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+button,a{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}
+header{padding:76px 20px 55px;text-align:center;border-bottom:1px solid #ffffff20;background:radial-gradient(ellipse at 50% 0%,#31578788,transparent 65%)}
+header h1{font-size:clamp(29px,5vw,52px);letter-spacing:.09em;margin:0 0 13px}header p{color:#c2d0e3;line-height:1.8;margin:0 auto;max-width:720px}
+.shell{max-width:1180px;margin:auto;padding:34px 24px 90px}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px}
+.section-head h2{margin:0;font-size:23px}.hint{color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:23px}
+.work{border:1px solid #ffffff1f;border-radius:17px;overflow:hidden;background:#111d2e;box-shadow:0 12px 25px #0005;text-align:left;color:inherit;padding:0;transition:transform .2s,border-color .2s;width:100%}
+.work:hover,.work:focus-visible{transform:translateY(-4px);border-color:var(--accent)}
+.cover{aspect-ratio:3/4;background:linear-gradient(145deg,#28496c,#101a2b);display:flex;align-items:center;justify-content:center;color:#adc4df;overflow:hidden}
+.cover img{width:100%;height:100%;object-fit:cover}.cover .placeholder{font-weight:800;letter-spacing:.16em;font-size:15px}
+.work-info{padding:18px}.work-info h3{margin:0 0 8px;font-size:19px}.work-info p{margin:0;color:var(--muted);font-size:14px;line-height:1.6}
+.back{border:1px solid #7b9dc4;background:#172b44;color:white;padding:10px 18px;border-radius:999px;margin-bottom:23px}
+.description{color:#c0cfe1;line-height:1.8;margin:0 0 28px}
+.episodes{display:grid;gap:12px}.episode{display:flex;align-items:center;gap:16px;background:#142136;border:1px solid #ffffff1b;border-radius:12px;padding:14px 17px;width:100%;color:white;text-align:left}
+.episode:hover{border-color:var(--accent)}.episode strong{display:block}.episode small{display:block;color:var(--muted);margin-top:5px}
+.num{background:#263e5d;color:#a9ceff;border-radius:9px;padding:12px 15px;font-weight:800}
+.reader-shell{background:#090b10;min-height:70vh}.reader-top{position:sticky;top:0;z-index:10;background:#0b1221ee;backdrop-filter:blur(10px);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid #ffffff20}
+.reader-top h2{font-size:15px;margin:0;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.reader-top button,.reader-bottom button{background:#1b3555;color:white;border:1px solid #51729a;border-radius:8px;padding:9px 13px}
+.pages{width:100%;max-width:800px;margin:0 auto;line-height:0}.pages img{width:100%;max-width:100%;height:auto;display:block;object-fit:contain}.empty{padding:80px 22px;text-align:center;line-height:1.9;color:#b6c5d9;border:1px dashed #60738b;margin:25px auto;max-width:740px;border-radius:12px}
+.reader-bottom{padding:36px 20px 80px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+footer{text-align:center;padding:30px;color:#91a2b9;font-size:13px}
+[hidden]{display:none!important}
+/* 스마트폰 웹툰 뷰어: 화면 너비에 딱 맞추고 원본 비율 유지 */
+@media(max-width:768px){
+  .reader-shell{width:100%;max-width:100%;margin:0;padding:0;overflow-x:clip}
+  .pages{width:100%;max-width:none;margin:0;padding:0;overflow:hidden}
+  .pages img{display:block;width:100%;max-width:100%;height:auto;margin:0;padding:0;border:0;object-fit:contain}
+  .reader-top{width:100%;padding:10px 8px;gap:5px}
+  .reader-top h2{min-width:0;flex:1}
+  .reader-bottom{padding:28px 10px 60px}
+}
+@media(max-width:600px){header{padding:56px 18px 43px}.shell{padding:25px 15px 70px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.work-info{padding:12px}.work-info h3{font-size:15px}.work-info p{font-size:12px}.section-head h2{font-size:19px}.reader-top button{font-size:12px;padding:8px}.reader-top h2{font-size:12px}}
+</style>
+</head>
+<body>
+<header id="hero"><h1>WEBTOON PORTFOLIO</h1><p>웹툰 연출 · 콘티 · 원고 작업 포트폴리오<br>작품을 선택하면 회차별 세로 스크롤 방식으로 감상할 수 있습니다.</p></header>
+<main>
+<section class="shell" id="home"><div class="section-head"><h2>작품 목록</h2><span class="hint">작품을 선택하세요</span></div><div class="grid" id="workGrid"></div></section>
+<section class="shell" id="workView" hidden><button class="back" id="toHome">← 작품 목록</button><h2 id="workTitle"></h2><p class="description" id="workDescription"></p><div class="episodes" id="episodeList"></div></section>
+<section class="reader-shell" id="reader" hidden><div class="reader-top"><button id="toEpisodes">← 회차 목록</button><h2 id="readerTitle"></h2><button id="toTop">↑ 맨 위</button></div><div class="pages" id="pages"></div><div class="reader-bottom"><button id="prevEpisode">← 이전 화</button><button id="nextEpisode">다음 화 →</button><button id="toEpisodesBottom">회차 목록</button></div></section>
+</main><footer>© WEBTOON PORTFOLIO · Powered by GitHub Pages</footer>
+<script>
+/* 이 아래 작품 정보와 파일 이름만 바꾸면 됩니다.
+   파일을 저장할 때 대소문자를 정확히 맞추세요.
+   images/작품폴더/회차폴더/001.jpg 형태로 이미지를 넣으세요. */
+const works=[
+ {id:"work01",title:"웹툰 작품 01",description:"작품 소개를 이곳에 입력하세요.",cover:"images/work01/cover.jpg",
+  episodes:[
+   {title:"1화",pages:["images/work01/ep01/001.jpg","images/work01/ep01/002.jpg","images/work01/ep01/003.jpg"]},
+   {title:"2화",pages:["images/work01/ep02/001.jpg","images/work01/ep02/002.jpg"]}
+  ]},
+ {id:"work02",title:"웹툰 작품 02",description:"두 번째 작품의 소개를 입력하세요.",cover:"images/work02/cover.jpg",
+  episodes:[{title:"1화",pages:["images/work02/ep01/001.jpg","images/work02/ep01/002.jpg"]}]}
+];
+const $=id=>document.getElementById(id);
+let currentWork=0,currentEpisode=0;
+function show(view){["home","workView","reader"].forEach(id=>$(id).hidden=id!==view);$("hero").hidden=view==="reader";window.scrollTo(0,0)}
+function makeCover(src,alt){const wrap=document.createElement("div");wrap.className="cover";const img=new Image();img.src=src;img.alt=alt;img.loading="lazy";img.onerror=()=>{wrap.innerHTML='<span class="placeholder">COVER IMAGE</span>'};wrap.appendChild(img);return wrap}
+function renderHome(){const grid=$("workGrid");grid.replaceChildren();works.forEach((work,i)=>{const card=document.createElement("button");card.className="work";card.appendChild(makeCover(work.cover,work.title+" 표지"));const info=document.createElement("div");info.className="work-info";const h=document.createElement("h3");h.textContent=work.title;const p=document.createElement("p");p.textContent=work.description;info.append(h,p);card.append(info);card.onclick=()=>openWork(i);grid.appendChild(card)})}
+function openWork(i){currentWork=i;const w=works[i];$("workTitle").textContent=w.title;$("workDescription").textContent=w.description;const list=$("episodeList");list.replaceChildren();w.episodes.forEach((ep,j)=>{const b=document.createElement("button");b.className="episode";const n=document.createElement("span");n.className="num";n.textContent=String(j+1).padStart(2,"0");const d=document.createElement("div");const s=document.createElement("strong");s.textContent=ep.title;const sm=document.createElement("small");sm.textContent=`이미지 ${ep.pages.length}장`;d.append(s,sm);b.append(n,d);b.onclick=()=>openEpisode(j);list.appendChild(b)});show("workView")}
+function openEpisode(j){currentEpisode=j;const w=works[currentWork],ep=w.episodes[j];$("readerTitle").textContent=w.title+" · "+ep.title;const pages=$("pages");pages.replaceChildren();let loaded=0;ep.pages.forEach((src,k)=>{const img=new Image();img.src=src;img.alt=`${ep.title} ${k+1}번째 이미지`;img.loading=k===0?"eager":"lazy";img.decoding="async";img.onerror=()=>{img.style.display="none";loaded++;checkEmpty()};img.onload=()=>{loaded++;checkEmpty()};pages.appendChild(img)});function checkEmpty(){if(loaded===ep.pages.length && ![...pages.children].some(el=>el.tagName==="IMG"&&el.style.display!=="none")){const d=document.createElement("div");d.className="empty";d.textContent="아직 원고 이미지가 없습니다. index.html에 지정된 경로에 파일을 올려주세요.";pages.appendChild(d)}}$("prevEpisode").disabled=j===0;$("nextEpisode").disabled=j===w.episodes.length-1;show("reader")}
+$("toHome").onclick=()=>show("home");$("toEpisodes").onclick=$("toEpisodesBottom").onclick=()=>openWork(currentWork);$("toTop").onclick=()=>window.scrollTo({top:0,behavior:"smooth"});$("prevEpisode").onclick=()=>{if(currentEpisode>0)openEpisode(currentEpisode-1)};$("nextEpisode").onclick=()=>{if(currentEpisode+1<works[currentWork].episodes.length)openEpisode(currentEpisode+1)};
+renderHome();show("home");
+</script>
+</body></html>
