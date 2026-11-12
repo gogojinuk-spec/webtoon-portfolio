@@ -30,6 +30,13 @@ header h1{font-size:clamp(29px,5vw,52px);letter-spacing:.09em;margin:0 0 13px}he
 .pages{width:100%;max-width:800px;margin:0 auto;line-height:0}.pages img{width:100%;max-width:100%;height:auto;display:block;object-fit:contain}.empty{padding:80px 22px;text-align:center;line-height:1.9;color:#b6c5d9;border:1px dashed #60738b;margin:25px auto;max-width:740px;border-radius:12px}
 .reader-bottom{padding:36px 20px 80px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 footer{text-align:center;padding:30px;color:#91a2b9;font-size:13px}
+.age-overlay{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;background:#03070ddd;backdrop-filter:blur(7px)}
+.age-card{width:min(100%,560px);padding:30px;border:1px solid #58708e;border-radius:18px;background:#111d2d;box-shadow:0 24px 80px #000b;text-align:center;line-height:1.8}
+.age-mark{display:inline-grid;place-items:center;width:58px;height:58px;margin:0 auto 15px;border:1px solid #e7a9a9;border-radius:50%;color:#ffdada;font-weight:800;font-size:20px}
+.age-card h2{margin:0 0 14px;font-size:23px}.age-card p{margin:0 0 20px;color:#d5deea}
+.age-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}.age-actions button{border:1px solid #6684a8;border-radius:9px;padding:11px 16px;color:#fff;background:#1b3555}.age-actions .age-continue{background:#365d87;border-color:#89b8ff;font-weight:700}
+@media(max-width:600px){.age-card{padding:24px 18px}.age-card h2{font-size:20px}.age-card p{font-size:14px}}
+
 [hidden]{display:none!important}
 /* 스마트폰 웹툰 뷰어: 화면 너비에 딱 맞추고 원본 비율 유지 */
 @media(max-width:768px){
@@ -49,25 +56,36 @@ footer{text-align:center;padding:30px;color:#91a2b9;font-size:13px}
 <section class="shell" id="home"><div class="section-head"><h2>작품 목록</h2><span class="hint">작품을 선택하세요</span></div><div class="grid" id="workGrid"></div></section>
 <section class="shell" id="workView" hidden><button class="back" id="toHome">← 작품 목록</button><h2 id="workTitle"></h2><p class="description" id="workDescription"></p><div class="episodes" id="episodeList"></div></section>
 <section class="reader-shell" id="reader" hidden><div class="reader-top"><button id="toEpisodes">← 회차 목록</button><h2 id="readerTitle"></h2><button id="toTop">↑ 맨 위</button></div><div class="pages" id="pages"></div><div class="reader-bottom"><button id="prevEpisode">← 이전 화</button><button id="nextEpisode">다음 화 →</button><button id="toEpisodesBottom">회차 목록</button></div></section>
-</main><footer>© WEBTOON PORTFOLIO · Powered by GitHub Pages</footer>
+</main><div class="age-overlay" id="ageWarning" hidden>
+ <section class="age-card" role="dialog" aria-modal="true" aria-labelledby="ageTitle" aria-describedby="ageMessage">
+  <div class="age-mark" aria-hidden="true">19+</div>
+  <h2 id="ageTitle">성인 콘텐츠 열람 안내</h2>
+  <p id="ageMessage">이 작품은 만 19세 이상을 대상으로 하며, 성기 묘사와 노골적인 성적 표현을 포함합니다. 이러한 표현에 불편함을 느끼거나 원치 않는 경우 열람하지 마세요. ‘계속 보기’를 선택하면 만 19세 이상이며, 안내 내용을 확인한 뒤 자발적으로 작품을 열람하는 것으로 간주됩니다. 열람 여부는 독자 본인의 판단에 따라 결정됩니다.</p>
+  <div class="age-actions"><button id="ageCancel" type="button">돌아가기</button><button id="ageContinue" class="age-continue" type="button">만 19세 이상 · 계속 보기</button></div>
+ </section>
+</div>
+<footer>© WEBTOON PORTFOLIO · Powered by GitHub Pages</footer>
 <script>
 /* 이 아래 작품 정보와 파일 이름만 바꾸면 됩니다.
    파일을 저장할 때 대소문자를 정확히 맞추세요.
    images/작품폴더/회차폴더/001.jpg 형태로 이미지를 넣으세요. */
 const works=[
- {id:"work01",title:"식당이모",description:"웹툰 포트폴리오 · 1회",cover:"images/work01/ep01/001.jpg",
+ {id:"work01",title:"식당이모",description:"웹툰 포트폴리오 · 1회",cover:"images/work01/ep01/1-001.png",
   episodes:[
-   {title:"1회",pages:["images/work01/ep01/001.jpg","images/work01/ep01/002.jpg","images/work01/ep01/003.jpg","images/work01/ep01/004.jpg","images/work01/ep01/005.jpg","images/work01/ep01/006.jpg","images/work01/ep01/007.jpg"]},
-   {title:"2회",pages:["images/work01/ep02/001.jpg","images/work01/ep02/002.jpg","images/work01/ep02/003.jpg"]}
+   {title:"1회",pages:["images/work01/ep01/1-001.png","images/work01/ep01/1-002.png","images/work01/ep01/1-003.png","images/work01/ep01/1-004.png","images/work01/ep01/1-005.png","images/work01/ep01/1-006.png","images/work01/ep01/1-007.png","images/work01/ep01/1-008.png","images/work01/ep01/1-009.png","images/work01/ep01/1-010.png","images/work01/ep01/1-011.png"]},
+   {title:"2회",pages:["images/work01/ep02/2-001.png","images/work01/ep02/2-002.png","images/work01/ep02/2-003.png","images/work01/ep02/2-004.png"]}
   ]}
 ];
 const $=id=>document.getElementById(id);
-let currentWork=0,currentEpisode=0;
+let currentWork=0,currentEpisode=0,pendingEpisode=0;
 function show(view){["home","workView","reader"].forEach(id=>$(id).hidden=id!==view);$("hero").hidden=view==="reader";window.scrollTo(0,0)}
 function makeCover(src,alt){const wrap=document.createElement("div");wrap.className="cover";const img=new Image();img.src=src;img.alt=alt;img.loading="lazy";img.onerror=()=>{wrap.innerHTML='<span class="placeholder">COVER IMAGE</span>'};wrap.appendChild(img);return wrap}
 function renderHome(){const grid=$("workGrid");grid.replaceChildren();works.forEach((work,i)=>{const card=document.createElement("button");card.className="work";card.appendChild(makeCover(work.cover,work.title+" 표지"));const info=document.createElement("div");info.className="work-info";const h=document.createElement("h3");h.textContent=work.title;const p=document.createElement("p");p.textContent=work.description;info.append(h,p);card.append(info);card.onclick=()=>openWork(i);grid.appendChild(card)})}
 function openWork(i){currentWork=i;const w=works[i];$("workTitle").textContent=w.title;$("workDescription").textContent=w.description;const list=$("episodeList");list.replaceChildren();w.episodes.forEach((ep,j)=>{const b=document.createElement("button");b.className="episode";const n=document.createElement("span");n.className="num";n.textContent=String(j+1).padStart(2,"0");const d=document.createElement("div");const s=document.createElement("strong");s.textContent=ep.title;const sm=document.createElement("small");sm.textContent=`이미지 ${ep.pages.length}장`;d.append(s,sm);b.append(n,d);b.onclick=()=>openEpisode(j);list.appendChild(b)});show("workView")}
-function openEpisode(j){currentEpisode=j;const w=works[currentWork],ep=w.episodes[j];$("readerTitle").textContent=w.title+" · "+ep.title;const pages=$("pages");pages.replaceChildren();let loaded=0;ep.pages.forEach((src,k)=>{const img=new Image();img.src=src;img.alt=`${ep.title} ${k+1}번째 이미지`;img.loading=k===0?"eager":"lazy";img.decoding="async";img.onerror=()=>{img.style.display="none";loaded++;checkEmpty()};img.onload=()=>{loaded++;checkEmpty()};pages.appendChild(img)});function checkEmpty(){if(loaded===ep.pages.length && ![...pages.children].some(el=>el.tagName==="IMG"&&el.style.display!=="none")){const d=document.createElement("div");d.className="empty";d.textContent="아직 원고 이미지가 없습니다. index.html에 지정된 경로에 파일을 올려주세요.";pages.appendChild(d)}}$("prevEpisode").disabled=j===0;$("nextEpisode").disabled=j===w.episodes.length-1;show("reader")}
+function openEpisode(j){pendingEpisode=j;$("ageWarning").hidden=false;$("ageContinue").focus()}
+function continueEpisode(){const j=pendingEpisode;$("ageWarning").hidden=true;currentEpisode=j;const w=works[currentWork],ep=w.episodes[j];$("readerTitle").textContent=w.title+" · "+ep.title;const pages=$("pages");pages.replaceChildren();let loaded=0;ep.pages.forEach((src,k)=>{const img=new Image();img.src=src;img.alt=`${ep.title} ${k+1}번째 이미지`;img.loading=k===0?"eager":"lazy";img.decoding="async";img.onerror=()=>{img.style.display="none";loaded++;checkEmpty()};img.onload=()=>{loaded++;checkEmpty()};pages.appendChild(img)});function checkEmpty(){if(loaded===ep.pages.length && ![...pages.children].some(el=>el.tagName==="IMG"&&el.style.display!=="none")){const d=document.createElement("div");d.className="empty";d.textContent="아직 원고 이미지가 없습니다. index.html에 지정된 경로에 파일을 올려주세요.";pages.appendChild(d)}}$("prevEpisode").disabled=j===0;$("nextEpisode").disabled=j===w.episodes.length-1;show("reader")}
+$("ageContinue").onclick=continueEpisode;$("ageCancel").onclick=()=>{$("ageWarning").hidden=true};
+$("ageWarning").addEventListener("keydown",e=>{if(e.key==="Escape")$("ageCancel").click()});
 $("toHome").onclick=()=>show("home");$("toEpisodes").onclick=$("toEpisodesBottom").onclick=()=>openWork(currentWork);$("toTop").onclick=()=>window.scrollTo({top:0,behavior:"smooth"});$("prevEpisode").onclick=()=>{if(currentEpisode>0)openEpisode(currentEpisode-1)};$("nextEpisode").onclick=()=>{if(currentEpisode+1<works[currentWork].episodes.length)openEpisode(currentEpisode+1)};
 renderHome();show("home");
 </script>
