@@ -30,6 +30,13 @@ header h1{font-size:clamp(29px,5vw,52px);letter-spacing:.09em;margin:0 0 13px}he
 .pages{width:100%;max-width:800px;margin:0 auto;line-height:0}.pages img{width:100%;max-width:100%;height:auto;display:block;object-fit:contain}.empty{padding:80px 22px;text-align:center;line-height:1.9;color:#b6c5d9;border:1px dashed #60738b;margin:25px auto;max-width:740px;border-radius:12px}
 .reader-bottom{padding:36px 20px 80px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 footer{text-align:center;padding:30px;color:#91a2b9;font-size:13px}
+
+.age-gate{min-height:100vh;display:grid;place-content:center;text-align:center;padding:28px;background:radial-gradient(ellipse at 50% 35%,#273f5e,#080e18 70%)}
+.age-card{max-width:650px;padding:clamp(26px,6vw,52px);border:1px solid #ffffff30;border-radius:22px;background:#111d2eee;box-shadow:0 20px 60px #0008}
+.age-card h1{font-size:clamp(27px,5vw,42px);margin:0 0 18px;color:#ffd18a}.age-card p{line-height:1.9;color:#d5deeb;margin:0 0 24px}.age-card strong{color:#fff}
+.age-enter{padding:13px 25px;border-radius:999px;border:1px solid #a9caff;background:#315b8b;color:#fff;font-weight:750;font-size:16px}.age-enter:hover{background:#477bb5}
+#lastUpdated{color:#bfd0e4;font-size:13px}.comments{max-width:800px;margin:0 auto;padding:26px 18px 10px;color:#eef4fc;line-height:1.6}.comments h3{margin:0 0 12px}.comment-note{font-size:13px;color:#aebed2;margin:0 0 12px}.comment-form{display:grid;gap:9px}.comment-form textarea{min-height:85px;resize:vertical;border:1px solid #526780;border-radius:9px;background:#111a27;color:white;padding:12px;font:inherit}.comment-form button{justify-self:start;background:#284a70;color:white;border:1px solid #6485aa;border-radius:8px;padding:9px 15px}.comment-status{min-height:1.5em;color:#bed2ec;font-size:13px}.comment-list{display:grid;gap:9px;padding:0;list-style:none}.comment-item{padding:12px 14px;background:#121d2d;border:1px solid #ffffff20;border-radius:9px;white-space:pre-wrap;overflow-wrap:anywhere}.comment-item time{display:block;color:#93a8c3;font-size:12px;margin-top:6px}
+
 [hidden]{display:none!important}
 /* 스마트폰 웹툰 뷰어: 화면 너비에 딱 맞추고 원본 비율 유지 */
 @media(max-width:768px){
@@ -44,32 +51,103 @@ footer{text-align:center;padding:30px;color:#91a2b9;font-size:13px}
 </style>
 </head>
 <body>
-<header id="hero"><h1>WEBTOON PORTFOLIO</h1><p>웹툰 연출 · 콘티 · 원고 작업 포트폴리오<br>작품을 선택하면 회차별 세로 스크롤 방식으로 감상할 수 있습니다.</p></header>
-<main>
-<section class="shell" id="home"><div class="section-head"><h2>작품 목록</h2><span class="hint">작품을 선택하세요</span></div><div class="grid" id="workGrid"></div></section>
+<section id="ageGate" class="age-gate" aria-labelledby="ageTitle">
+  <div class="age-card">
+    <h1 id="ageTitle">성인 웹툰 열람 안내</h1>
+    <p><strong>이 작품은 만 19세 이상 성인을 위한 콘텐츠입니다.</strong><br>성적 표현 등 성인 대상 장면이 포함될 수 있습니다. 불편함을 느낄 수 있는 분은 열람을 삼가 주세요.<br>만 19세 미만은 입장할 수 없습니다.</p>
+    <button class="age-enter" id="enterSite">만 19세 이상입니다 · 입장하기</button>
+  </div>
+</section>
+<header id="hero" hidden><h1>WEBTOON PORTFOLIO</h1><p>웹툰 연출 · 콘티 · 원고 작업 포트폴리오<br>작품을 선택하면 회차별 세로 스크롤 방식으로 감상할 수 있습니다.</p></header>
+<main hidden>
+<section class="shell" id="home"><div class="section-head"><h2>작품 목록</h2><span class="hint">작품을 선택하세요</span></div><p id="lastUpdated" aria-live="polite">원고 최근 수정일을 확인하는 중…</p><div class="grid" id="workGrid"></div></section>
 <section class="shell" id="workView" hidden><button class="back" id="toHome">← 작품 목록</button><h2 id="workTitle"></h2><p class="description" id="workDescription"></p><div class="episodes" id="episodeList"></div></section>
-<section class="reader-shell" id="reader" hidden><div class="reader-top"><button id="toEpisodes">← 회차 목록</button><h2 id="readerTitle"></h2><button id="toTop">↑ 맨 위</button></div><div class="pages" id="pages"></div><div class="reader-bottom"><button id="prevEpisode">← 이전 화</button><button id="nextEpisode">다음 화 →</button><button id="toEpisodesBottom">회차 목록</button></div></section>
-</main><footer>© WEBTOON PORTFOLIO · Powered by GitHub Pages</footer>
+<section class="reader-shell" id="reader" hidden><div class="reader-top"><button id="toEpisodes">← 회차 목록</button><h2 id="readerTitle"></h2><button id="toTop">↑ 맨 위</button></div><div class="pages" id="pages"></div><section class="comments" id="comments" aria-live="polite"></section><div class="reader-bottom"><button id="prevEpisode">← 이전 화</button><button id="nextEpisode">다음 화 →</button><button id="toEpisodesBottom">회차 목록</button></div></section>
+</main><footer hidden>© WEBTOON PORTFOLIO · Powered by GitHub Pages</footer>
 <script>
 /* 이 아래 작품 정보와 파일 이름만 바꾸면 됩니다.
    파일을 저장할 때 대소문자를 정확히 맞추세요.
-   images/작품폴더/회차폴더/001.jpg 형태로 이미지를 넣으세요. */
+   이미지 파일명과 확장자(PNG 등)를 실제 파일과 똑같이 적으세요. */
 const works=[
  {id:"work01",title:"식당이모",description:"웹툰 포트폴리오 · 1회",cover:"images/work01/ep01/1-001.png",
   episodes:[
    {title:"1회",pages:["images/work01/ep01/1-001.png","images/work01/ep01/1-002.png","images/work01/ep01/1-003.png","images/work01/ep01/1-004.png","images/work01/ep01/1-005.png","images/work01/ep01/1-006.png","images/work01/ep01/1-007.png","images/work01/ep01/1-008.png","images/work01/ep01/1-009.png","images/work01/ep01/1-010.png","images/work01/ep01/1-011.png","images/work01/ep01/1-012.png","images/work01/ep01/1-013.png"]},
    {title:"2회",pages:["images/work01/ep02/2-001.png","images/work01/ep02/2-002.png","images/work01/ep02/2-003.png","images/work01/ep02/2-004.png","images/work01/ep02/2-005.png","images/work01/ep02/2-006.png","images/work01/ep02/2-007.png","images/work01/ep02/2-008.png","images/work01/ep02/2-009.png","images/work01/ep02/2-010.png","images/work01/ep02/2-011.png","images/work01/ep02/2-012.png"]},
-   {title:"3회",pages:["images/work01/ep03/3-001.png"]}
+   {title:"3회",pages:["images/work01/ep03/3-001.png","images/work01/ep03/3-002.png"]}
   ]}
 ];
 const $=id=>document.getElementById(id);
 let currentWork=0,currentEpisode=0;
 function show(view){["home","workView","reader"].forEach(id=>$(id).hidden=id!==view);$("hero").hidden=view==="reader";window.scrollTo(0,0)}
 function makeCover(src,alt){const wrap=document.createElement("div");wrap.className="cover";const img=new Image();img.src=src;img.alt=alt;img.loading="lazy";img.onerror=()=>{wrap.innerHTML='<span class="placeholder">COVER IMAGE</span>'};wrap.appendChild(img);return wrap}
+function loadLatestUploadDate(){
+ const target=$("lastUpdated");
+ fetch("https://api.github.com/repos/gogojinuk-spec/webtoon-portfolio/commits?path=images/work01&per_page=1",{headers:{Accept:"application/vnd.github+json"}})
+  .then(r=>{if(!r.ok)throw new Error("GitHub API response");return r.json()})
+  .then(items=>{const raw=items?.[0]?.commit?.committer?.date||items?.[0]?.commit?.author?.date;if(!raw)throw new Error("No commit date");const date=new Date(raw);target.textContent="원고 최근 수정일: "+new Intl.DateTimeFormat("ko-KR",{year:"numeric",month:"2-digit",day:"2-digit",timeZone:"Asia/Seoul"}).format(date)})
+  .catch(()=>{target.textContent="원고 최근 수정일: 날짜를 불러오지 못했습니다"});
+}
+function commentsKey(epKey){return "webtoon-comments-"+epKey}
+function renderLocalComments(epKey){
+ const list=$("commentList");if(!list)return;list.replaceChildren();
+ let items=[];try{items=JSON.parse(localStorage.getItem(commentsKey(epKey))||"[]")}catch{}
+ items.forEach(item=>{const li=document.createElement("li");li.className="comment-item";const body=document.createElement("span");body.textContent=item.text;const time=document.createElement("time");time.textContent=item.when;li.append(body,time);list.appendChild(li)});
+}
+function drawComments(epKey){
+ const box=$("comments");box.replaceChildren();
+ const title=document.createElement("h3");title.textContent="익명 댓글";
+ const note=document.createElement("p");note.className="comment-note";note.id="commentNote";note.textContent="Firebase 연결 전입니다. 댓글은 이 브라우저에만 저장되어 다른 사람과 공유되지 않습니다.";
+ const form=document.createElement("form");form.className="comment-form";form.id="commentForm";
+ const field=document.createElement("textarea");field.id="commentText";field.maxLength=500;field.required=true;field.placeholder="댓글을 입력하세요 (최대 500자)";field.setAttribute("aria-label","익명 댓글");
+ const send=document.createElement("button");send.type="submit";send.textContent="댓글 등록";
+ const status=document.createElement("div");status.className="comment-status";status.id="commentStatus";status.setAttribute("aria-live","polite");
+ const list=document.createElement("ul");list.className="comment-list";list.id="commentList";
+ form.append(field,send);box.append(title,note,form,status,list);renderLocalComments(epKey);
+ form.addEventListener("submit",async event=>{
+  event.preventDefault();const text=field.value.trim();if(!text)return;
+  if(window.firebaseCommentSubmit){
+   status.textContent="등록 중…";send.disabled=true;
+   try{await window.firebaseCommentSubmit(epKey,text);field.value="";status.textContent="댓글을 등록했습니다."}
+   catch(error){status.textContent="댓글 등록 실패: Firebase 설정과 보안 규칙을 확인해 주세요.";console.error(error)}
+   finally{send.disabled=false}
+  }else{
+   const items=JSON.parse(localStorage.getItem(commentsKey(epKey))||"[]");items.push({text,when:new Intl.DateTimeFormat("ko-KR",{dateStyle:"short",timeStyle:"short"}).format(new Date())});localStorage.setItem(commentsKey(epKey),JSON.stringify(items));field.value="";status.textContent="이 브라우저에 저장했습니다. 다른 방문자와 공유하려면 Firebase 설정이 필요합니다.";renderLocalComments(epKey)
+  }
+ });
+ if(window.activateCloudComments)window.activateCloudComments(epKey);
+}
 function renderHome(){const grid=$("workGrid");grid.replaceChildren();works.forEach((work,i)=>{const card=document.createElement("button");card.className="work";card.appendChild(makeCover(work.cover,work.title+" 표지"));const info=document.createElement("div");info.className="work-info";const h=document.createElement("h3");h.textContent=work.title;const p=document.createElement("p");p.textContent=work.description;info.append(h,p);card.append(info);card.onclick=()=>openWork(i);grid.appendChild(card)})}
 function openWork(i){currentWork=i;const w=works[i];$("workTitle").textContent=w.title;$("workDescription").textContent=w.description;const list=$("episodeList");list.replaceChildren();w.episodes.forEach((ep,j)=>{const b=document.createElement("button");b.className="episode";const n=document.createElement("span");n.className="num";n.textContent=String(j+1).padStart(2,"0");const d=document.createElement("div");const s=document.createElement("strong");s.textContent=ep.title;const sm=document.createElement("small");sm.textContent=`이미지 ${ep.pages.length}장`;d.append(s,sm);b.append(n,d);b.onclick=()=>openEpisode(j);list.appendChild(b)});show("workView")}
-function openEpisode(j){currentEpisode=j;const w=works[currentWork],ep=w.episodes[j];$("readerTitle").textContent=w.title+" · "+ep.title;const pages=$("pages");pages.replaceChildren();let loaded=0;ep.pages.forEach((src,k)=>{const img=new Image();img.src=src;img.alt=`${ep.title} ${k+1}번째 이미지`;img.loading=k===0?"eager":"lazy";img.decoding="async";img.onerror=()=>{img.style.display="none";loaded++;checkEmpty()};img.onload=()=>{loaded++;checkEmpty()};pages.appendChild(img)});function checkEmpty(){if(loaded===ep.pages.length && ![...pages.children].some(el=>el.tagName==="IMG"&&el.style.display!=="none")){const d=document.createElement("div");d.className="empty";d.textContent="아직 원고 이미지가 없습니다. index.html에 지정된 경로에 파일을 올려주세요.";pages.appendChild(d)}}$("prevEpisode").disabled=j===0;$("nextEpisode").disabled=j===w.episodes.length-1;show("reader")}
+function openEpisode(j){currentEpisode=j;const epKey=works[currentWork].id+"-ep"+String(j+1).padStart(2,"0");window.currentEpisodeKey=epKey;const w=works[currentWork],ep=w.episodes[j];$("readerTitle").textContent=w.title+" · "+ep.title;const pages=$("pages");pages.replaceChildren();let loaded=0;ep.pages.forEach((src,k)=>{const img=new Image();img.src=src;img.alt=`${ep.title} ${k+1}번째 이미지`;img.loading=k===0?"eager":"lazy";img.decoding="async";img.onerror=()=>{img.style.display="none";loaded++;checkEmpty()};img.onload=()=>{loaded++;checkEmpty()};pages.appendChild(img)});drawComments(epKey);function checkEmpty(){if(loaded===ep.pages.length && ![...pages.children].some(el=>el.tagName==="IMG"&&el.style.display!=="none")){const d=document.createElement("div");d.className="empty";d.textContent="아직 원고 이미지가 없습니다. index.html에 지정된 경로에 파일을 올려주세요.";pages.appendChild(d)}}$("prevEpisode").disabled=j===0;$("nextEpisode").disabled=j===w.episodes.length-1;show("reader")}
 $("toHome").onclick=()=>show("home");$("toEpisodes").onclick=$("toEpisodesBottom").onclick=()=>openWork(currentWork);$("toTop").onclick=()=>window.scrollTo({top:0,behavior:"smooth"});$("prevEpisode").onclick=()=>{if(currentEpisode>0)openEpisode(currentEpisode-1)};$("nextEpisode").onclick=()=>{if(currentEpisode+1<works[currentWork].episodes.length)openEpisode(currentEpisode+1)};
-renderHome();show("home");
+renderHome();
+function enterPortfolio(){$("ageGate").hidden=true;$("hero").hidden=false;document.querySelector("main").hidden=false;document.querySelector("footer").hidden=false;sessionStorage.setItem("webtoon-age-confirmed","yes");loadLatestUploadDate();show("home")}
+$("enterSite").onclick=enterPortfolio;
+if(sessionStorage.getItem("webtoon-age-confirmed")==="yes")enterPortfolio();
 </script>
+
+<script type="module">
+/* Firebase를 설정하면 익명 댓글이 방문자 사이에 공유됩니다.
+   아래 값은 Firebase Console > 프로젝트 설정 > 내 앱의 웹 앱 설정값으로 바꾸세요.
+   Authentication에서 익명 로그인과 Firestore를 활성화하고 firestore.rules 파일의 규칙을 적용하세요. */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+const firebaseConfig={apiKey:"",authDomain:"",projectId:"",appId:""};
+const configured=Object.values(firebaseConfig).every(value=>typeof value==="string"&&value.length>0);
+if(configured){
+ try{
+  const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);let stopListening=null;
+  window.firebaseCommentSubmit=async(episodeId,text)=>{const user=auth.currentUser||((await signInAnonymously(auth)).user);await addDoc(collection(db,"episodeComments",episodeId,"comments"),{uid:user.uid,text:text.slice(0,500),createdAt:serverTimestamp()})};
+  window.activateCloudComments=async episodeId=>{
+   const note=document.getElementById("commentNote"),status=document.getElementById("commentStatus"),list=document.getElementById("commentList");if(!list)return;
+   if(stopListening){stopListening();stopListening=null}
+   try{if(!auth.currentUser)await signInAnonymously(auth);if(note)note.textContent="익명으로 댓글이 공유됩니다. 개인 정보는 댓글에 적지 마세요.";const q=query(collection(db,"episodeComments",episodeId,"comments"),orderBy("createdAt","asc"));stopListening=onSnapshot(q,snapshot=>{if(!document.getElementById("commentList"))return;const current=document.getElementById("commentList");current.replaceChildren();snapshot.forEach(doc=>{const data=doc.data(),li=document.createElement("li"),body=document.createElement("span"),time=document.createElement("time");li.className="comment-item";body.textContent=data.text||"";const stamp=data.createdAt?.toDate?.();time.textContent=stamp?new Intl.DateTimeFormat("ko-KR",{dateStyle:"short",timeStyle:"short"}).format(stamp):"방금";li.append(body,time);current.appendChild(li)});if(status)status.textContent=""},error=>{if(status)status.textContent="댓글 목록을 불러오지 못했습니다. Firebase 보안 규칙을 확인해 주세요.";console.error(error)})}
+   catch(error){if(note)note.textContent="Firebase 익명 댓글 연결에 실패했습니다. 설정을 확인해 주세요.";if(status)status.textContent="현재 댓글은 공유되지 않습니다.";console.error(error)}
+  };
+  if(window.currentEpisodeKey)window.activateCloudComments(window.currentEpisodeKey);
+ }catch(error){console.error("Firebase 초기화 오류",error)}
+}
+</script>
+
 </body></html>
